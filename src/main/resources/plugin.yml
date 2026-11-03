@@ -1,0 +1,30 @@
+name: MRXXlShop
+version: ${project.version}
+main: com.mrxxl.shop.ShopPlugin
+api-version: '1.21'
+description: Vault tabanlı Türkçe GUI market ve satış eklentisi
+depend: [Vault]
+softdepend: [Essentials]
+
+commands:
+  shop:
+    description: Marketi açar
+    usage: /<command> [kategori|reload]
+    aliases: [market]
+  sat:
+    description: Eşya satma menüsünü açar
+    usage: /<command> [hepsi|el]
+  shard:
+    description: Shard bakiyeni gösterir
+    usage: /<command> [ver|al] [oyuncu] [miktar]
+
+permissions:
+  mrxxlshop.use:
+    description: Marketi kullanma izni
+    default: true
+  mrxxlshop.sell:
+    description: /sat komutunu kullanma izni
+    default: true
+  mrxxlshop.admin:
+    description: Market ayarlarını yeniden yükleme izni
+    default: op

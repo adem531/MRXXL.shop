@@ -1,0 +1,371 @@
+# ============================================
+#  MRXXlShop - Ayar Dosyası (SMP market)
+#  Renk kodları için & kullan (örn. &a yeşil, &b açık mavi)
+#  Değişiklikten sonra oyunda /shop reload yaz.
+# ============================================
+
+settings:
+  main-menu-title: "&bMarket"
+  main-menu-rows: 5            # 1-6 arası
+  category-title: "&bMarket &8» &f{category} &8({page}/{pages})"
+  sell-title: "&bEşya Sat"
+  filler: true                 # Boş slotları cam ile doldur
+  filler-material: LIGHT_BLUE_STAINED_GLASS_PANE   # sade kristal görünüm; GLASS_PANE yaparsan tamamen şeffaf olur
+  sell-button-slot: 40
+  sell-button-icon: EMERALD
+
+# Shard: oyunda kalarak kazanılır, spawner marketinde harcanır.
+shards:
+  reward-amount: 1               # her ödülde verilen shard (0 = kapalı)
+  reward-interval-minutes: 5     # kaç dakikada bir verilsin
+  notify: true                   # ödül gelince oyuncuya mesaj atılsın mı
+  # Not: bu üç ayar için sunucuyu yeniden başlat, /shop reload yetmez.
+
+messages:
+  prefix: "&8[&bMarket&8] "
+  reloaded: "&aAyarlar yeniden yüklendi."
+  players-only: "&cBu komutu sadece oyuncular kullanabilir."
+  no-permission: "&cBunun için iznin yok."
+  unknown-category: "&cBöyle bir kategori yok."
+  cannot-buy: "&cBu eşya satın alınamaz."
+  cannot-sell: "&cBu eşya satılamaz."
+  not-enough-money: "&cYeterli paran yok! Gereken: &e{price}"
+  inventory-full: "&cEnvanterinde yeterli yer yok."
+  no-items: "&cEnvanterinde satılacak bu eşyadan yok."
+  nothing-to-sell: "&cSatılabilecek eşya bulunamadı."
+  transaction-failed: "&cİşlem başarısız oldu, tekrar dene."
+  bought: "&a{amount}x &f{item} &asatın aldın. &7(-{price})"
+  sold: "&a{amount}x &f{item} &asattın. &7(+{price})"
+  sold-all: "&a{count} adet eşya sattın. &7(+{price})"
+  sold-hand: "&a{amount}x &f{item} &asattın. &7(+{price})"
+  not-enough-shards: "&cYeterli shard'ın yok! Gereken: &d{price} shard"
+  bought-spawner: "&f{item} &asatın aldın. &7(-{price})"
+  shard-balance: "&dShard bakiyen: &f{amount}"
+  shard-reward: "&d+{amount} shard &7(oyun süresi ödülü)"
+  shard-usage: "&cKullanım: /shard [ver|al] <oyuncu> <miktar>"
+  shard-given: "&a{player} oyuncusuna &d{amount} shard &averildi."
+  shard-taken: "&a{player} oyuncusundan &d{amount} shard &aalındı."
+  shard-take-failed: "&c{player} oyuncusunun yeterli shard'ı yok."
+  player-not-found: "&cOyuncu bulunamadı."
+  not-sellable-hand: "&cElindeki eşya satılamaz."
+
+lore:
+  buy: "&7Alış fiyatı: &a{price}"
+  sell: "&7Satış fiyatı: &e{price}"
+  cannot-buy: "&8Bu eşya satın alınamaz"
+  cannot-sell: "&8Bu eşya satılamaz"
+  click-buy-1: "&aSol tık: &71 adet al"
+  click-buy-spawner: "&aSol tık: &7spawner satın al"
+  shard-category: "&dShard ile ödenir"
+  click-buy-2: "&aShift + Sol tık: &7{stack} adet al"
+  click-sell-1: "&eSağ tık: &71 adet sat"
+  click-sell-2: "&eShift + Sağ tık: &7envanterdekilerin hepsini sat"
+  open-category: "&7{count} eşya &8- &bAçmak için tıkla"
+  sell-open: "&7Envanterindeki eşyaları sat &8- &bTıkla"
+
+buttons:
+  back: "&cAna menü"
+  prev: "&eÖnceki sayfa"
+  next: "&eSonraki sayfa"
+  balance: "&6Bakiyen: &f{balance}"
+  shard-balance: "&dShard: &f{balance}"
+  sell: "&aEşya Sat"
+
+# /sat menüsü
+sell:
+  # Büyülü ve hasarlı eşyalar da satılır:
+  enchant-value-per-level: 10     # her büyü seviyesi için eklenen para
+  damaged-min-percent: 10         # çok hasarlı eşya bile fiyatın en az bu yüzdesini eder
+  info-name: "&bNasıl çalışır?"
+  info-lore:
+    - "&7Satmak istediğin eşyaları"
+    - "&7yukarıdaki alana koy."
+    - "&7Ardından &aSat &7butonuna tıkla."
+    - " "
+    - "&8Büyülü ve hasarlı eşyalar da satılır."
+    - "&8İçinde eşya olan shulker/bundle satılmaz."
+    - "&8Menüyü kapatırsan eşyalar sana geri verilir."
+  confirm-name: "&aSat"
+  confirm-lore-count: "&7Satılacak eşya: &f{count}"
+  confirm-lore-total: "&7Toplam kazanç: &e{price}"
+  confirm-lore-click: "&aSatmak için tıkla"
+  confirm-lore-empty: "&8Satılabilir eşya yok"
+  close: "&cKapat"
+
+# --------------------------------------------
+#  Kategoriler
+#  slot  : ana menüdeki yeri (0'dan başlar)
+#  icon  : ana menüde görünen eşya
+#  items : MALZEME_ADI: {buy: alış fiyatı, sell: satış fiyatı}
+#          buy veya sell'i yazmazsan o işlem kapalı olur.
+#  Yazdığın malzeme bu sürümde yoksa konsola uyarı yazılır ve atlanır.
+# --------------------------------------------
+categories:
+  bloklar:
+    name: "&aBloklar"
+    icon: GRASS_BLOCK
+    slot: 10
+    items:
+      STONE: {buy: 2, sell: 0.5}
+      COBBLESTONE: {sell: 0.25}
+      DEEPSLATE: {buy: 2, sell: 0.5}
+      COBBLED_DEEPSLATE: {buy: 1, sell: 0.25}
+      ANDESITE: {buy: 1, sell: 0.25}
+      DIORITE: {buy: 1, sell: 0.25}
+      GRANITE: {buy: 1, sell: 0.25}
+      TUFF: {buy: 1, sell: 0.25}
+      DIRT: {buy: 1, sell: 0.25}
+      GRAVEL: {buy: 1, sell: 0.25}
+      SAND: {buy: 1, sell: 0.25}
+      RED_SAND: {buy: 1, sell: 0.25}
+      CLAY: {buy: 3, sell: 0.75}
+      GLASS: {buy: 2.5, sell: 0.5}
+      OAK_LOG: {buy: 3, sell: 0.75}
+      SPRUCE_LOG: {buy: 3, sell: 0.75}
+      BIRCH_LOG: {buy: 3, sell: 0.75}
+      JUNGLE_LOG: {buy: 3, sell: 0.75}
+      ACACIA_LOG: {buy: 3, sell: 0.75}
+      DARK_OAK_LOG: {buy: 3, sell: 0.75}
+      CHERRY_LOG: {buy: 3, sell: 0.75}
+      MANGROVE_LOG: {buy: 3, sell: 0.75}
+      OAK_PLANKS: {buy: 1, sell: 0.25}
+      STONE_BRICKS: {buy: 2.5, sell: 0.5}
+      BRICKS: {buy: 5, sell: 1}
+      SMOOTH_STONE: {buy: 2.5, sell: 0.5}
+      SANDSTONE: {buy: 2, sell: 0.5}
+      TERRACOTTA: {buy: 4, sell: 1}
+      WHITE_WOOL: {buy: 3, sell: 0.75}
+      ICE: {buy: 2.5, sell: 0.5}
+      SNOW_BLOCK: {buy: 2, sell: 0.5}
+      MOSS_BLOCK: {buy: 4, sell: 1}
+      OBSIDIAN: {buy: 30, sell: 7.5}
+
+  madenler:
+    name: "&bMadenler"
+    icon: DIAMOND
+    slot: 11
+    items:
+      COAL: {buy: 5, sell: 1.5}
+      RAW_COPPER: {buy: 3, sell: 0.75}
+      COPPER_INGOT: {buy: 4.5, sell: 1}
+      RAW_IRON: {buy: 7, sell: 2}
+      IRON_INGOT: {buy: 10, sell: 3}
+      RAW_GOLD: {buy: 12, sell: 3.5}
+      GOLD_INGOT: {buy: 18, sell: 5}
+      LAPIS_LAZULI: {buy: 4, sell: 1}
+      AMETHYST_SHARD: {buy: 6, sell: 2}
+      DIAMOND: {buy: 75, sell: 22}
+      EMERALD: {buy: 62, sell: 19}
+      COAL_BLOCK: {buy: 45, sell: 14}
+      IRON_BLOCK: {buy: 90, sell: 27}
+      GOLD_BLOCK: {buy: 160, sell: 45}
+      DIAMOND_BLOCK: {buy: 675, sell: 200}
+      EMERALD_BLOCK: {buy: 560, sell: 170}
+
+  end:
+    name: "&5End Eşyaları"
+    icon: END_STONE
+    slot: 12
+    items:
+      END_STONE: {buy: 6, sell: 1.5}
+      END_STONE_BRICKS: {buy: 7.5, sell: 2}
+      PURPUR_BLOCK: {buy: 10, sell: 2.5}
+      CHORUS_FRUIT: {buy: 5, sell: 1}
+      END_ROD: {buy: 15, sell: 4}
+      ENDER_PEARL: {buy: 38, sell: 11}
+      ENDER_EYE: {buy: 62, sell: 18}
+      SHULKER_SHELL: {buy: 375, sell: 110}
+
+  nether:
+    name: "&cNether Eşyaları"
+    icon: NETHERRACK
+    slot: 13
+    items:
+      NETHERRACK: {buy: 1, sell: 0.25}
+      NETHER_BRICKS: {buy: 4, sell: 1}
+      SOUL_SAND: {buy: 3, sell: 0.75}
+      GLOWSTONE: {buy: 10, sell: 2.5}
+      NETHER_WART: {buy: 5, sell: 1}
+      QUARTZ: {buy: 7.5, sell: 2}
+      BLAZE_ROD: {buy: 30, sell: 9}
+      MAGMA_CREAM: {buy: 20, sell: 5.5}
+      GHAST_TEAR: {buy: 75, sell: 22}
+      CRYING_OBSIDIAN: {buy: 50, sell: 12}
+      ANCIENT_DEBRIS: {buy: 450, sell: 125}
+      NETHERITE_SCRAP: {buy: 500, sell: 150}
+      NETHERITE_INGOT: {buy: 2250, sell: 675}
+
+  pvp:
+    name: "&4PvP Eşyaları"
+    icon: NETHERITE_SWORD
+    slot: 14
+    items:
+      TOTEM_OF_UNDYING: {buy: 625, sell: 150}
+      ENCHANTED_GOLDEN_APPLE: {buy: 1500, sell: 375}
+      GOLDEN_APPLE: {buy: 100, sell: 25}
+      END_CRYSTAL: {buy: 225, sell: 62}
+      RESPAWN_ANCHOR: {buy: 300}
+      GLOWSTONE: {buy: 10, sell: 2.5}
+      ENDER_PEARL: {buy: 38, sell: 11}
+      EXPERIENCE_BOTTLE: {buy: 30, sell: 7.5}
+      FIREWORK_ROCKET: {buy: 10, sell: 2.5}
+      TNT: {buy: 38, sell: 10}
+      COBWEB: {buy: 25, sell: 6}
+      ARROW: {buy: 1.5, sell: 0.25}
+      WIND_CHARGE: {buy: 15, sell: 4}
+
+  yiyecek:
+    name: "&6Yiyecek"
+    icon: COOKED_BEEF
+    slot: 15
+    items:
+      BREAD: {buy: 4, sell: 1}
+      APPLE: {buy: 2.5, sell: 0.75}
+      BAKED_POTATO: {buy: 3, sell: 0.75}
+      COOKED_BEEF: {buy: 6, sell: 2}
+      COOKED_PORKCHOP: {buy: 6, sell: 2}
+      COOKED_CHICKEN: {buy: 5, sell: 1.5}
+      COOKED_SALMON: {buy: 5.5, sell: 1.5}
+      GOLDEN_CARROT: {buy: 15, sell: 4.5}
+
+  ciftlik:
+    name: "&2Çiftlik"
+    icon: WHEAT
+    slot: 16
+    items:
+      WHEAT: {buy: 2, sell: 0.5}
+      WHEAT_SEEDS: {buy: 1, sell: 0.25}
+      CARROT: {buy: 2, sell: 0.5}
+      POTATO: {buy: 2, sell: 0.5}
+      BEETROOT: {buy: 2, sell: 0.5}
+      SUGAR_CANE: {buy: 2, sell: 0.5}
+      SUGAR: {buy: 2.5, sell: 0.5}
+      PUMPKIN: {buy: 4, sell: 1}
+      MELON_SLICE: {buy: 1, sell: 0.25}
+      CACTUS: {buy: 2.5, sell: 0.5}
+      BAMBOO: {buy: 1, sell: 0.25}
+      KELP: {buy: 1, sell: 0.25}
+      SWEET_BERRIES: {buy: 2, sell: 0.5}
+      COCOA_BEANS: {buy: 2.5, sell: 0.5}
+      EGG: {buy: 2, sell: 0.5}
+      BONE_MEAL: {buy: 2.5, sell: 0.75}
+      OAK_SAPLING: {buy: 4, sell: 0.75}
+      HAY_BLOCK: {buy: 18, sell: 4.5}
+
+  canavar:
+    name: "&cCanavar Düşenleri"
+    icon: BONE
+    slot: 20
+    items:
+      ROTTEN_FLESH: {buy: 1.5, sell: 0.25}
+      BONE: {buy: 4, sell: 1}
+      STRING: {buy: 4, sell: 1}
+      SPIDER_EYE: {buy: 4, sell: 1}
+      GUNPOWDER: {buy: 7.5, sell: 2}
+      FEATHER: {buy: 2, sell: 0.5}
+      LEATHER: {buy: 5, sell: 1}
+      INK_SAC: {buy: 3, sell: 0.75}
+      SLIME_BALL: {buy: 10, sell: 2.5}
+      PHANTOM_MEMBRANE: {buy: 20, sell: 5}
+      PRISMARINE_SHARD: {buy: 6, sell: 1.5}
+      PRISMARINE_CRYSTALS: {buy: 7.5, sell: 2}
+      NAUTILUS_SHELL: {buy: 100, sell: 25}
+      ARMADILLO_SCUTE: {buy: 38, sell: 10}
+      BREEZE_ROD: {buy: 50, sell: 14}
+
+  redstone:
+    name: "&4Redstone"
+    icon: REDSTONE
+    slot: 21
+    items:
+      REDSTONE: {buy: 4, sell: 1}
+      REDSTONE_BLOCK: {buy: 34, sell: 9}
+      REDSTONE_TORCH: {buy: 5, sell: 1}
+      REPEATER: {buy: 12, sell: 3}
+      COMPARATOR: {buy: 22, sell: 5.5}
+      OBSERVER: {buy: 25, sell: 6}
+      PISTON: {buy: 20, sell: 5}
+      STICKY_PISTON: {buy: 32, sell: 8}
+      HOPPER: {buy: 35, sell: 9}
+      DROPPER: {buy: 15, sell: 4}
+      DISPENSER: {buy: 20, sell: 5}
+      LEVER: {buy: 2, sell: 0.5}
+      STONE_BUTTON: {buy: 1.5, sell: 0.25}
+      REDSTONE_LAMP: {buy: 25, sell: 6}
+      DAYLIGHT_DETECTOR: {buy: 28, sell: 7}
+      TARGET: {buy: 22, sell: 5.5}
+      SLIME_BLOCK: {buy: 90, sell: 22}
+      HONEY_BLOCK: {buy: 30, sell: 7.5}
+      RAIL: {buy: 5, sell: 1}
+      POWERED_RAIL: {buy: 15, sell: 4}
+      MINECART: {buy: 25, sell: 6}
+      NOTE_BLOCK: {buy: 10, sell: 2.5}
+
+  spawnerlar:
+    name: "&dSpawner Market"
+    icon: SPAWNER
+    slot: 23
+    currency: shard            # fiyatlar shard ile ödenir
+    spawners:
+      CHICKEN: {buy: 50, name: "&eTavuk Spawner"}
+      COW: {buy: 60, name: "&6İnek Spawner"}
+      PIG: {buy: 60, name: "&dDomuz Spawner"}
+      SHEEP: {buy: 60, name: "&fKoyun Spawner"}
+      SPIDER: {buy: 90, name: "&cÖrümcek Spawner"}
+      ZOMBIE: {buy: 100, name: "&2Zombi Spawner"}
+      SKELETON: {buy: 120, name: "&fİskelet Spawner"}
+      CREEPER: {buy: 150, name: "&aCreeper Spawner"}
+      ENDERMAN: {buy: 200, name: "&5Enderman Spawner"}
+      BLAZE: {buy: 250, name: "&6Blaze Spawner"}
+      IRON_GOLEM: {buy: 300, name: "&7Demir Golem Spawner"}
+
+# --------------------------------------------
+#  Sadece /sat ile satılabilen ek eşyalar (marketde görünmez).
+#  Marketteki satış fiyatları zaten /sat'a dahildir.
+# --------------------------------------------
+extra-sell:
+  ENCHANTED_BOOK: 5
+  RAW_COPPER_BLOCK: 7
+  RAW_IRON_BLOCK: 18
+  RAW_GOLD_BLOCK: 32
+  COPPER_BLOCK: 11
+  LAPIS_BLOCK: 9
+  QUARTZ_BLOCK: 18
+  IRON_NUGGET: 0.25
+  COPPER_ORE: 1
+  IRON_ORE: 2
+  GOLD_ORE: 3.5
+  COAL_ORE: 1.5
+  DIAMOND_ORE: 22
+  EMERALD_ORE: 19
+  REDSTONE_ORE: 1
+  LAPIS_ORE: 1
+  DEEPSLATE_IRON_ORE: 2
+  DEEPSLATE_GOLD_ORE: 4
+  DEEPSLATE_DIAMOND_ORE: 24
+  NETHER_GOLD_ORE: 1.5
+  NETHER_QUARTZ_ORE: 2
+  SPRUCE_PLANKS: 0.25
+  BIRCH_PLANKS: 0.25
+  STICK: 0.25
+  FLINT: 0.5
+  PORKCHOP: 0.75
+  BEEF: 0.75
+  CHICKEN: 0.5
+  MUTTON: 0.5
+  COD: 0.5
+  SALMON: 0.5
+  RABBIT_HIDE: 0.5
+  SPIDER_EYE: 1
+  BLAZE_ROD: 9
+  DIAMOND_SWORD: 38
+  DIAMOND_PICKAXE: 100
+  DIAMOND_SHOVEL: 30
+  DIAMOND_HOE: 62
+  IRON_SWORD: 7.5
+  IRON_PICKAXE: 15
+  IRON_AXE: 15
+  IRON_HELMET: 12
+  IRON_CHESTPLATE: 20
+  IRON_LEGGINGS: 18
+  IRON_BOOTS: 10
